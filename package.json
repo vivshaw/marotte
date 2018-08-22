@@ -1,0 +1,40 @@
+{
+  "name": "puppet-prerender",
+  "version": "0.0.1",
+  "description": "\"A CLI utility to statically prerender your dynamic front-end apps, using Puppeteer & Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivshaw/puppet-prerender.git"
+  },
+  "keywords": [
+    "puppeteer",
+    "prerender",
+    "universal",
+    "typescript",
+    "chromium",
+    "express"
+  ],
+  "author": "vivshaw",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vivshaw/puppet-prerender/issues"
+  },
+  "homepage": "https://github.com/vivshaw/puppet-prerender#readme",
+  "devDependencies": {
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "@types/express": "^4.16.0",
+    "@types/lodash": "^4.14.116",
+    "@types/mz": "0.0.32",
+    "@types/puppeteer": "^1.6.0",
+    "express": "^4.16.3",
+    "lodash": "^4.17.10",
+    "mz": "^2.7.0",
+    "puppeteer": "^1.7.0"
+  }
+}
