@@ -7,7 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint -p tsconfig.json",
     "pretty": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "tidy": "npm run pretty && npm run lint"
+    "tidy": "npm run pretty && npm run lint",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run tidy && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "husky": {
     "hooks": {
