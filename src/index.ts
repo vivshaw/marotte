@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+import program from 'commander';
+
 import { createPuppetRenderer } from './renderer/puppet-renderer.provider';
 import colors from './util/colors.util';
 
@@ -16,10 +20,15 @@ async function render() {
   renderer.cleanup();
 }
 
-// Run the renderer
-render()
-  .then(() => console.log(format('Static prerendering complete!')))
-  .catch(err => {
-    console.error('Err', err);
-    process.exit(1);
+program
+  .command('render')
+  .alias('r')
+  .description('Statically prerender the application')
+  .action(() => {
+    render()
+      .then(() => console.log(format('Static prerendering complete!')))
+      .catch(err => {
+        console.error('Err', err);
+        process.exit(1);
+      });
   });
