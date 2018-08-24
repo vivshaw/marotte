@@ -4,7 +4,8 @@
   "description": "\"A CLI utility to statically prerender your dynamic front-end apps, using Puppeteer & Express",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "tslint -p tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
   },
   "homepage": "https://github.com/vivshaw/puppet-prerender#readme",
   "devDependencies": {
+    "tslint": "^5.11.0",
     "typescript": "^3.0.1"
   },
   "dependencies": {
