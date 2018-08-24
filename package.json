@@ -2,7 +2,8 @@
   "name": "puppet-prerender",
   "version": "0.0.1",
   "description": "\"A CLI utility to statically prerender your dynamic front-end apps, using Puppeteer & Express",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint -p tsconfig.json",
