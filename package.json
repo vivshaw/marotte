@@ -10,8 +10,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm format && npm lint",
-      "pre-push": "npm format && npm lint"
+      "pre-commit": "npm run format && npm run lint",
+      "pre-push": "npm run format && npm run lint"
     }
   },
   "repository": {
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/vivshaw/puppet-prerender#readme",
   "devDependencies": {
-    "husky": "^0.14.3",
+    "husky": "^1.0.0-rc.13",
     "prettier": "^1.14.2",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
