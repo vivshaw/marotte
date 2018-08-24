@@ -1,4 +1,4 @@
-import { createPuppetRenderer } from './puppet-renderer';
+import { createPuppetRenderer } from './renderer/puppet-renderer.provider';
 
 // Defining some configuration
 const PORT = 4000;

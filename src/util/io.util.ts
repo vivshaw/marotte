@@ -4,7 +4,7 @@ import { readFile, exists, writeFile, mkdir } from 'mz/fs';
 export default class IO {
 
     public static async readAsString(filePath: string): Promise<string> {
-        const fileContent = await readFile(filePath)
+        const fileContent = await readFile(filePath);
         return fileContent.toString();
     }
 

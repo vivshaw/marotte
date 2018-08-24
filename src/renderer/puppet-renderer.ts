@@ -3,17 +3,15 @@ import { Server } from 'http';
 import { Browser, Page } from 'puppeteer';
 import { join } from 'path';
 
-import parseForRoutes from './util/scrape.util';
-import IO from './util/io.util';
-import providePuppeteer from './inject/puppeteer.provider';
-import provideExpress from './inject/express.provider';
+import parseForRoutes from '../util/scrape.util';
+import IO from '../util/io.util';
 
 export interface IPuppetRenderer {
     run(): void;
     cleanup(): void;
 }
 
-class PuppetRenderer implements IPuppetRenderer {
+export class PuppetRenderer implements IPuppetRenderer {
 
     constructor(private options: any, private server: Server, private browser: Browser, private page: Page) { }
 
@@ -88,22 +86,4 @@ class PuppetRenderer implements IPuppetRenderer {
         return result;
     }
 
-}
-
-export async function createPuppetRenderer(port: number): Promise<PuppetRenderer> {
-
-    const options = {
-        port: port,
-        host: `http://localhost:${port}`,
-        pathParams: {
-            workingDir: process.cwd(),
-            distSubDir: 'dist'
-        }
-    };
-
-    // Get injectable instances of the renderer's dependencies on Express and Puppeteer
-    const server = await provideExpress(options);
-    const puppeteer = await providePuppeteer();
-
-    return new PuppetRenderer(options, server, puppeteer.browser, puppeteer.page);
 }
