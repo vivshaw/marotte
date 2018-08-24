@@ -5,6 +5,7 @@ import { Browser, Page } from 'puppeteer';
 
 import IO from '../util/io.util';
 import parseForRoutes from '../util/scrape.util';
+import { TAG } from './index';
 
 export interface IPuppetRenderer {
   run(): void;
@@ -78,7 +79,7 @@ export class PuppetRenderer implements IPuppetRenderer {
     );
 
     await IO.writeAndMkdir(result, filePath);
-    console.log(`Rendered & wrote ${filePath}`);
+    console.log(TAG, `Rendered & wrote ${filePath}`);
 
     // Return the page HTML
     return result;

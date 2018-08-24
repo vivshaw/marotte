@@ -1,7 +1,9 @@
 import { createPuppetRenderer } from './renderer/puppet-renderer.provider';
+import colors from './util/colors.util';
 
 // Defining some configuration
 const PORT = 4000;
+const format = colors.COMPLETE;
 
 async function render() {
   // Create & initialize renderer
@@ -16,7 +18,7 @@ async function render() {
 
 // Run the renderer
 render()
-  .then(() => console.log('Static prerendering complete!'))
+  .then(() => console.log(format('Static prerendering complete!')))
   .catch(err => {
     console.error('Err', err);
     process.exit(1);

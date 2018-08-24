@@ -3,6 +3,7 @@ import { Server } from 'http';
 import { join } from 'path';
 
 import IO from '../util/io.util';
+import { TAG } from './index';
 
 /*
 * Fires up an Express.js server to serve the page while Puppeteer
@@ -22,7 +23,7 @@ export default async function provideExpress(options: any): Promise<Server> {
     const s = app.listen(options.port, (err: string) => (err ? reject(err) : resolve(s)));
   });
 
-  console.log(`Express now serving app at ${options.host}!`);
+  console.log(TAG, `Express now serving app at ${options.host}!`);
 
   return server;
 }
