@@ -4,8 +4,9 @@ import { createPuppetRenderer } from './puppet-renderer';
 const PORT = 4000;
 
 async function render() {
+
   // Create & initialize renderer
-  const renderer = await createPuppetRenderer();
+  const renderer = await createPuppetRenderer(PORT);
 
   // Run the prerender loop that crawls the page & spits out HTML snapshots
   await renderer.run();
