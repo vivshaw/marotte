@@ -1,10 +1,11 @@
-import providePuppeteer from '../inject/puppeteer.provider';
 import provideExpress from '../inject/express.provider';
+import providePuppeteer from '../inject/puppeteer.provider';
+import { PuppetRenderer } from './puppet-renderer';
 
 export async function createPuppetRenderer(port: number): Promise<PuppetRenderer> {
 
     const options = {
-        port: port,
+        port,
         host: `http://localhost:${port}`,
         pathParams: {
             workingDir: process.cwd(),

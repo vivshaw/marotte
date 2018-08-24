@@ -4,7 +4,6 @@ import { createPuppetRenderer } from './renderer/puppet-renderer.provider';
 const PORT = 4000;
 
 async function render() {
-
   // Create & initialize renderer
   const renderer = await createPuppetRenderer(PORT);
 

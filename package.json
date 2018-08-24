@@ -5,7 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "tslint -p tsconfig.json"
+    "lint": "tslint -p tsconfig.json",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm format && npm lint",
+      "pre-push": "npm format && npm lint"
+    }
   },
   "repository": {
     "type": "git",
@@ -26,7 +33,10 @@
   },
   "homepage": "https://github.com/vivshaw/puppet-prerender#readme",
   "devDependencies": {
+    "husky": "^0.14.3",
+    "prettier": "^1.14.2",
     "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.1"
   },
   "dependencies": {
