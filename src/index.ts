@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
 import program from 'commander';
+import 'reflect-metadata';
 
+import { context } from './inversify.config';
+
+import { TYPES } from './inject';
 import { IOptions } from './renderer/index';
-import { createPuppetRenderer } from './renderer/puppet-renderer.provider';
+import { Renderer } from './renderer/puppet-renderer';
 import colors from './util/colors.util';
 
 // Defining some configuration
@@ -29,7 +33,7 @@ async function render(args: IArgsType) {
     },
   };
 
-  const renderer = await createPuppetRenderer(options);
+  const renderer = context(options).get<Renderer>(TYPES.Renderer);
 
   // Run the prerender loop that crawls the page & spits out HTML snapshots
   await renderer.run();

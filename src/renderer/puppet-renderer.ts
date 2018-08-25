@@ -1,19 +1,22 @@
-import { Server } from 'http';
+import { inject, injectable } from 'inversify';
 import { difference, uniq } from 'lodash';
 import { join } from 'path';
-import { Browser, Page } from 'puppeteer';
 
+import { BrowserService } from './../inject/browser.service';
+import { HostService } from './../inject/host.service';
+
+import { TYPES } from '../inject';
 import IO from '../util/io.util';
 import parseForRoutes from '../util/scrape.util';
-import { TAG } from './index';
+import { IOptions, TAG } from './index';
 
-export interface IPuppetRenderer {
-  run(): void;
-  cleanup(): void;
-}
-
-export class PuppetRenderer implements IPuppetRenderer {
-  constructor(private options: any, private server: Server, private browser: Browser, private page: Page) {}
+@injectable()
+export class Renderer {
+  constructor(
+    @inject(TYPES.Options) private options: IOptions,
+    @inject(TYPES.HostService) private host: HostService,
+    @inject(TYPES.BrowserService) private browser: BrowserService,
+  ) {}
 
   /*
      * Crawls the site & renders each route to a static HTML file.
@@ -21,6 +24,8 @@ export class PuppetRenderer implements IPuppetRenderer {
      * Otherwise, it crawls the whole page.
      */
   public async run(limitToRoutes?: string[]) {
+    await this.host.Ready;
+
     if (limitToRoutes) {
       // Just render the routes provided in the array
       for (const route of limitToRoutes) {
@@ -43,7 +48,6 @@ export class PuppetRenderer implements IPuppetRenderer {
 
         // Scrape result for links, extract the routes, and add the routes that haven't been
         // rendered yet to routesToRender
-
         routesToRender = difference(uniq(routesToRender.concat(parseForRoutes(result))), alreadyRendered);
       }
     }
@@ -53,8 +57,8 @@ export class PuppetRenderer implements IPuppetRenderer {
      * Closes down the Express and Puppeteer instances.
      */
   public cleanup() {
-    this.browser.close();
-    this.server.close();
+    this.browser.onClose();
+    this.host.onClose();
   }
 
   /*
@@ -64,13 +68,7 @@ export class PuppetRenderer implements IPuppetRenderer {
      */
   private async fetchAndRender(route: string): Promise<string> {
     // Request the route
-    await this.page.goto(`${this.options.host}/${route}`);
-
-    // Get the html content after rendering in Chromium
-    // Replace the HTML doctype, which outerHTML drops
-    const result = await this.page.evaluate(
-      'new XMLSerializer().serializeToString(document.doctype) + document.documentElement.outerHTML',
-    );
+    const result = await this.browser.fetch(route);
 
     const filePath = join(
       this.options.pathParams.workingDir,
