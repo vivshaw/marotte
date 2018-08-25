@@ -1,6 +1,6 @@
 {
   "name": "puppetshow",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "\"A CLI utility to statically prerender your dynamic front-end apps at build time, using Puppeteer & Express",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
