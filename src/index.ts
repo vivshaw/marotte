@@ -38,7 +38,9 @@ async function render(args: IArgsType) {
   renderer.cleanup();
 }
 
-program
+const puppetshow = program.version('0.0.2');
+
+puppetshow
   .command('render')
   .alias('r')
   .description('Statically prerender the application')
@@ -54,8 +56,8 @@ program
       });
   });
 
-program.parse(process.argv);
+puppetshow.parse(process.argv);
 
-if (program.args.length === 0) {
-  program.help();
+if (puppetshow.args.length === 0) {
+  puppetshow.help();
 }
