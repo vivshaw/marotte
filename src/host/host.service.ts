@@ -3,9 +3,9 @@ import { Server } from 'http';
 import { inject, injectable } from 'inversify';
 import { join } from 'path';
 
-import { TAG, TYPES } from '.';
+import { IOptions, TYPES } from '../types';
+import colors from '../util/colors.util';
 import IO from '../util/io.util';
-import { IOptions } from './../renderer/index';
 
 /*
 * Fires up an Express.js server to serve the page while Puppeteer
@@ -25,7 +25,7 @@ export default async function provideServer(options: IOptions): Promise<Server> 
     const s = app.listen(options.port, (err: string) => (err ? reject(err) : resolve(s)));
   });
 
-  console.log(TAG, `Express now serving app at ${options.host}!`);
+  console.log(colors.SETUP_TAG, `Express now serving app at ${options.host}!`);
 
   return server;
 }
@@ -35,7 +35,7 @@ export class HostService {
   Ready: Promise<Server>;
 
   constructor(@inject(TYPES.Options) private options: IOptions) {
-    this.Ready = provideServer(options);
+    this.Ready = provideServer(this.options);
   }
 
   public async onClose() {

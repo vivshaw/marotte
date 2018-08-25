@@ -2,8 +2,8 @@ import { inject, injectable } from 'inversify';
 import puppeteer from 'puppeteer';
 import { Browser, Page } from 'puppeteer';
 
-import { TAG, TYPES } from '.';
-import { IOptions } from './../renderer/index';
+import { IOptions, TYPES } from '../types';
+import colors from '../util/colors.util';
 
 /*
 * Fires up a Puppeteer instance to render the page with headless Chromium
@@ -12,7 +12,7 @@ export default async function providePuppeteer(): Promise<Browser> {
   // Launch Puppeteer.
   // This needs to be an instance so we can close it when we're done.
   const browser = await puppeteer.launch();
-  console.log(TAG, `Started headless Chromium with Puppeteer!`);
+  console.log(colors.SETUP_TAG, `Started headless Chromium with Puppeteer!`);
 
   return browser;
 }
@@ -30,7 +30,7 @@ export class BrowserService {
     if (!this._page) {
       const browser = await this.Ready;
       this._page = browser.newPage();
-      console.log(TAG, `Puppeteer page ready to render.`);
+      console.log(colors.SETUP_TAG, `Puppeteer page ready to render.`);
     }
 
     return this._page;

@@ -4,10 +4,8 @@ import program from 'commander';
 import 'reflect-metadata';
 
 import { context } from './inversify.config';
-
-import { TYPES } from './inject';
-import { IOptions } from './renderer/index';
-import { Renderer } from './renderer/puppet-renderer';
+import { Renderer } from './renderer/renderer';
+import { IOptions } from './types';
 import colors from './util/colors.util';
 
 // Defining some configuration
@@ -33,13 +31,14 @@ async function render(args: IArgsType) {
     },
   };
 
-  const renderer = context(options).get<Renderer>(TYPES.Renderer);
+  const ctx = context(options);
+  const renderer = ctx.get<Renderer>(Renderer);
 
   // Run the prerender loop that crawls the page & spits out HTML snapshots
   await renderer.run();
 
   // Clean up Puppeteer & Express processes
-  renderer.cleanup();
+  ctx.close();
 }
 
 const marotte = program.version('0.0.2');

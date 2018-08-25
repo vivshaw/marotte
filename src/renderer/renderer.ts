@@ -2,20 +2,22 @@ import { inject, injectable } from 'inversify';
 import { difference, uniq } from 'lodash';
 import { join } from 'path';
 
-import { BrowserService } from './../inject/browser.service';
-import { HostService } from './../inject/host.service';
+import { BrowserService } from '../browser/browser.service';
+import { HostService } from '../host/host.service';
 
-import { TYPES } from '../inject';
+import { IOptions, TYPES } from '../types';
+import colors from '../util/colors.util';
 import IO from '../util/io.util';
 import parseForRoutes from '../util/scrape.util';
-import { IOptions, TAG } from './index';
+
+const TAG = colors.RUN('-> ');
 
 @injectable()
 export class Renderer {
   constructor(
     @inject(TYPES.Options) private options: IOptions,
-    @inject(TYPES.HostService) private host: HostService,
-    @inject(TYPES.BrowserService) private browser: BrowserService,
+    @inject(HostService) private host: HostService,
+    @inject(BrowserService) private browser: BrowserService,
   ) {}
 
   /*
@@ -51,14 +53,6 @@ export class Renderer {
         routesToRender = difference(uniq(routesToRender.concat(parseForRoutes(result))), alreadyRendered);
       }
     }
-  }
-
-  /*
-     * Closes down the Express and Puppeteer instances.
-     */
-  public cleanup() {
-    this.browser.onClose();
-    this.host.onClose();
   }
 
   /*
