@@ -2,16 +2,34 @@
 
 import program from 'commander';
 
+import { IOptions } from './renderer/index';
 import { createPuppetRenderer } from './renderer/puppet-renderer.provider';
 import colors from './util/colors.util';
 
 // Defining some configuration
-const PORT = 4000;
 const format = colors.COMPLETE;
 
-async function render() {
+interface IArgsType {
+  workingdir?: string;
+  port?: number;
+  dist?: string;
+}
+
+async function render(args: IArgsType) {
   // Create & initialize renderer
-  const renderer = await createPuppetRenderer(PORT);
+
+  const DEFAULT_PORT = 4321;
+
+  const options: IOptions = {
+    port: args.port || DEFAULT_PORT,
+    host: `http://localhost:${args.port || DEFAULT_PORT}`,
+    pathParams: {
+      workingDir: args.workingdir || process.cwd(),
+      distSubDir: args.dist || 'dist',
+    },
+  };
+
+  const renderer = await createPuppetRenderer(options);
 
   // Run the prerender loop that crawls the page & spits out HTML snapshots
   await renderer.run();
@@ -24,8 +42,11 @@ program
   .command('render')
   .alias('r')
   .description('Statically prerender the application')
-  .action(() => {
-    render()
+  .option('-w, --workingdir [dir]', 'Working directory for project [processs.cwd()]')
+  .option('-d, --dist [dir]', 'Distribution subdirectory for project [./dist]')
+  .option('-p, --port [port]', 'Port to host Express on [4000]')
+  .action((args: IArgsType) => {
+    render(args)
       .then(() => console.log(format('Static prerendering complete!')))
       .catch(err => {
         console.error('Err', err);
@@ -34,3 +55,7 @@ program
   });
 
 program.parse(process.argv);
+
+if (program.args.length === 0) {
+  program.help();
+}
