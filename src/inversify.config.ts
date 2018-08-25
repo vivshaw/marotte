@@ -6,6 +6,7 @@ import { Renderer } from './renderer/renderer';
 import { IOptions, TYPES } from './types';
 
 class CloseableContainer extends Container {
+  async ready(): Promise<void> {}
   close() {}
 }
 
@@ -25,6 +26,10 @@ function context(options: IOptions) {
     .bind<Renderer>(Renderer)
     .toSelf()
     .inSingletonScope();
+
+  container.ready = async function() {
+    await this.get(HostService).Ready;
+  };
 
   container.close = function() {
     this.get(BrowserService).onClose();

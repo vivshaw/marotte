@@ -16,7 +16,6 @@ const TAG = colors.RUN('-> ');
 export class Renderer {
   constructor(
     @inject(TYPES.Options) private options: IOptions,
-    @inject(HostService) private host: HostService,
     @inject(BrowserService) private browser: BrowserService,
   ) {}
 
@@ -26,8 +25,6 @@ export class Renderer {
      * Otherwise, it crawls the whole page.
      */
   public async run(limitToRoutes?: string[]) {
-    await this.host.Ready;
-
     if (limitToRoutes) {
       // Just render the routes provided in the array
       for (const route of limitToRoutes) {
