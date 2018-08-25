@@ -78,7 +78,7 @@ export class PuppetRenderer implements IPuppetRenderer {
       (route || 'index') + '.html',
     );
 
-    await IO.writeAndMkdir(result, filePath);
+    await IO.writeAndMkdir(filePath, result);
     console.log(TAG, `Rendered & wrote ${filePath}`);
 
     // Return the page HTML

@@ -10,7 +10,7 @@ import { TAG } from './index';
 * is rendering it.
 */
 export default async function provideExpress(options: any): Promise<Server> {
-  const appRoot = join(options.pathParams.workingDir, options.pathParams.distSubdir);
+  const appRoot = join(options.pathParams.workingDir, options.pathParams.distSubDir);
   const index = await IO.readAsString(join(appRoot, 'index.html'));
 
   // Serve static files from disk & index.html from memory
