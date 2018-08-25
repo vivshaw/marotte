@@ -38,9 +38,9 @@ async function render(args: IArgsType) {
   renderer.cleanup();
 }
 
-const puppetshow = program.version('0.0.2');
+const marotte = program.version('0.0.2');
 
-puppetshow
+marotte
   .command('render')
   .alias('r')
   .description('Statically prerender the application')
@@ -56,8 +56,8 @@ puppetshow
       });
   });
 
-puppetshow.parse(process.argv);
+marotte.parse(process.argv);
 
-if (puppetshow.args.length === 0) {
-  puppetshow.help();
+if (marotte.args.length === 0) {
+  marotte.help();
 }

@@ -1,5 +1,5 @@
 {
-  "name": "puppetshow",
+  "name": "marotte",
   "version": "0.0.2",
   "description": "\"A CLI utility to statically prerender your dynamic front-end apps at build time, using Puppeteer & Express",
   "main": "dist/index.js",
@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vivshaw/puppetshow.git"
+    "url": "git+https://github.com/vivshaw/marotte.git"
   },
   "keywords": [
     "puppeteer",
@@ -44,9 +44,9 @@
   "author": "vivshaw",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vivshaw/puppetshow/issues"
+    "url": "https://github.com/vivshaw/marotte/issues"
   },
-  "homepage": "https://github.com/vivshaw/puppetshow#readme",
+  "homepage": "https://github.com/vivshaw/marotte#readme",
   "devDependencies": {
     "@types/commander": "^2.12.2",
     "chalk": "^2.4.1",
