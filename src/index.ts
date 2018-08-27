@@ -1,15 +1,12 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk';
 import program from 'commander';
 import 'reflect-metadata';
 
 import { context } from './inversify.config';
 import { Renderer } from './renderer/renderer';
 import { IOptions } from './types';
-import colors from './util/colors.util';
-
-// Defining some configuration
-const format = colors.COMPLETE;
 
 interface IArgsType {
   workingdir?: string;
@@ -18,8 +15,6 @@ interface IArgsType {
 }
 
 async function render(args: IArgsType) {
-  // Create & initialize renderer
-
   const DEFAULT_PORT = 4321;
 
   const options: IOptions = {
@@ -29,6 +24,7 @@ async function render(args: IArgsType) {
       workingDir: args.workingdir || process.cwd(),
       distSubDir: args.dist || 'dist',
     },
+    verbose: true,
   };
 
   const ctx = context(options);
@@ -43,7 +39,7 @@ async function render(args: IArgsType) {
   ctx.close();
 }
 
-const marotte = program.version('0.0.2');
+const marotte = program.version('0.0.4');
 
 marotte
   .command('render')
@@ -54,7 +50,7 @@ marotte
   .option('-p, --port [port]', 'Port to host Express on [4000]')
   .action((args: IArgsType) => {
     render(args)
-      .then(() => console.log(format('Static prerendering complete!')))
+      .then(() => console.log(chalk.bold.white('Static prerendering complete!')))
       .catch(err => {
         console.error('Err', err);
         process.exit(1);

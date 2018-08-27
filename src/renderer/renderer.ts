@@ -1,22 +1,19 @@
 import { inject, injectable } from 'inversify';
 import { difference, uniq } from 'lodash';
 import { join } from 'path';
+import { Logger } from './../logger/logger.service';
 
 import { BrowserService } from '../browser/browser.service';
-import { HostService } from '../host/host.service';
-
 import { IOptions, TYPES } from '../types';
-import colors from '../util/colors.util';
 import IO from '../util/io.util';
 import parseForRoutes from '../util/scrape.util';
-
-const TAG = colors.RUN('-> ');
 
 @injectable()
 export class Renderer {
   constructor(
     @inject(TYPES.Options) private options: IOptions,
     @inject(BrowserService) private browser: BrowserService,
+    @inject(Logger) private logger: Logger,
   ) {}
 
   /*
@@ -68,7 +65,7 @@ export class Renderer {
     );
 
     await IO.writeAndMkdir(filePath, result);
-    console.log(TAG, `Rendered & wrote ${filePath}`);
+    this.logger.run(`Rendered & wrote ${filePath}`);
 
     // Return the page HTML
     return result;

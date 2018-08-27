@@ -4,6 +4,8 @@ const TYPES = {
   HostService: Symbol('HostService'),
   Renderer: Symbol('Renderer'),
   Options: Symbol('Options'),
+  ServerProvider: Symbol('ServerProvider'),
+  BrowserProvider: Symbol('BrowserProvider'),
 };
 
 interface IOptions {
@@ -13,6 +15,7 @@ interface IOptions {
     workingDir: string;
     distSubDir: string;
   };
+  verbose: boolean;
 }
 
 export { TYPES, IOptions };
