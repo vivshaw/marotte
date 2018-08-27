@@ -1,9 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { Browser, Page } from 'puppeteer';
-import { Provider } from './../inversify.config';
 
 import { Logger } from '../logger/logger.service';
-import { IOptions, TYPES } from '../types';
+import { IOptions, Provider, TYPES } from '../types';
 
 @injectable()
 export class BrowserService {

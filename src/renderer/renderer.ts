@@ -50,10 +50,10 @@ export class Renderer {
   }
 
   /*
-     * Make Puppeteer visit a single route of our Express-hosted app,
-     * then render it to dist/.
-     * If dist/ doesn't exist, we'll first create it.
-     */
+   * Make Puppeteer visit a single route of our Express-hosted app,
+   * then render it to dist/.
+   * If dist/ doesn't exist, we'll first create it.
+   */
   private async fetchAndRender(route: string): Promise<string> {
     // Request the route
     const result = await this.browser.fetch(route);

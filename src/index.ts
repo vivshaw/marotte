@@ -4,16 +4,14 @@ import chalk from 'chalk';
 import program from 'commander';
 import 'reflect-metadata';
 
-import { context } from './inversify.config';
+import { context } from './ioc';
 import { Renderer } from './renderer/renderer';
-import { IOptions } from './types';
+import { IArgsType, IOptions } from './types';
 
-interface IArgsType {
-  workingdir?: string;
-  port?: number;
-  dist?: string;
-}
-
+/*
+ * Initialize the necessary services with Inversify DI,
+ * then prerender the app
+ */
 async function render(args: IArgsType) {
   const DEFAULT_PORT = 4321;
 
@@ -27,6 +25,7 @@ async function render(args: IArgsType) {
     verbose: true,
   };
 
+  // Open context & wait for async services to be ready
   const ctx = context(options);
   await ctx.ready();
 
@@ -39,6 +38,9 @@ async function render(args: IArgsType) {
   ctx.close();
 }
 
+/*
+ * Initiate marotte with our CLI interface!
+ */
 const marotte = program.version('0.0.4');
 
 marotte

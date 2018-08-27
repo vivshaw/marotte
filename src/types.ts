@@ -18,4 +18,17 @@ interface IOptions {
   verbose: boolean;
 }
 
-export { TYPES, IOptions };
+interface IArgsType {
+  workingdir?: string;
+  port?: number;
+  dist?: string;
+}
+
+type TsClass = new (...args: any[]) => any;
+type InjectIdentifier = TsClass | symbol;
+
+type Func = (...args: any[]) => any;
+
+type Provider<T> = (...args: any[]) => Promise<T>;
+
+export { TYPES, IArgsType, IOptions, TsClass, InjectIdentifier, Func, Provider };

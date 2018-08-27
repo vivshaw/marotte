@@ -1,8 +1,7 @@
 import { Server } from 'http';
 import { inject, injectable } from 'inversify';
 
-import { Provider } from '../inversify.config';
-import { TYPES } from '../types';
+import { Provider, TYPES } from '../types';
 
 @injectable()
 export class HostService {
