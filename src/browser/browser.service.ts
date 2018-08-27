@@ -2,10 +2,10 @@ import { inject, injectable } from 'inversify';
 import { Browser, Page } from 'puppeteer';
 
 import { Logger } from '../logger/logger.service';
-import { IOptions, Provider, TYPES } from '../types';
+import { ICloseable, IOptions, IReadiable, Provider, TYPES } from '../types';
 
 @injectable()
-export class BrowserService {
+export class BrowserService implements ICloseable, IReadiable {
   Ready: Promise<Browser>;
   private _page?: Promise<Page>;
 

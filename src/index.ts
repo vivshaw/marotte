@@ -29,9 +29,8 @@ async function render(args: IArgsType) {
   const ctx = context(options);
   await ctx.ready();
 
-  const renderer = ctx.get<Renderer>(Renderer);
-
   // Run the prerender loop that crawls the page & spits out HTML snapshots
+  const renderer = ctx.get<Renderer>(Renderer);
   await renderer.run();
 
   // Clean up Puppeteer & Express processes

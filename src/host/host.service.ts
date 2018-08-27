@@ -1,10 +1,10 @@
 import { Server } from 'http';
 import { inject, injectable } from 'inversify';
 
-import { Provider, TYPES } from '../types';
+import { ICloseable, IReadiable, Provider, TYPES } from '../types';
 
 @injectable()
-export class HostService {
+export class HostService implements ICloseable, IReadiable {
   Ready: Promise<Server>;
 
   constructor(@inject(TYPES.ServerProvider) serverProvider: Provider<Server>) {

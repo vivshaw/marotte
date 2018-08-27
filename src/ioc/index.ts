@@ -57,15 +57,8 @@ function context(options: IOptions) {
   bindings(container, options);
   providers(container);
 
-  // Implement container lifecycle hooks
-  container.ready = async function() {
-    await this.get(HostService).Ready;
-  };
-
-  container.close = function() {
-    this.get(BrowserService).onClose();
-    this.get(HostService).onClose();
-  };
+  container.preReady = [container.get(HostService)];
+  container.onClose = [container.get(BrowserService), container.get(HostService)];
 
   return container;
 }

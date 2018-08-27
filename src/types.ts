@@ -39,4 +39,14 @@ type Func = (...args: any[]) => any;
 // Any Inversify provider
 type Provider<T> = (...args: any[]) => Promise<T>;
 
-export { TYPES, IArgsType, IOptions, TsClass, InjectIdentifier, Func, Provider };
+// closeable component
+interface ICloseable {
+  onClose: () => Promise<void>;
+}
+
+// closeable component
+interface IReadiable {
+  Ready: Promise<any>;
+}
+
+export { TYPES, IArgsType, IOptions, TsClass, InjectIdentifier, Func, Provider, ICloseable, IReadiable };
