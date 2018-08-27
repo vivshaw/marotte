@@ -1,18 +1,18 @@
 import { Container } from 'inversify';
 
-import { Func, ICloseable, InjectIdentifier, IReadiable } from '../types';
+import { Func, InjectIdentifier } from '../types';
 
 /*
  * An extended Container that can inject into functions,
  * and that manages components via lifecycle hooks
  */
 export default class LifecycleContainer extends Container {
-  preReady?: IReadiable[];
-  onClose?: ICloseable[];
+  preReady?: InjectIdentifier[];
+  onClose?: InjectIdentifier[];
 
   async ready(): Promise<LifecycleContainer> {
     if (this.preReady) {
-      await Promise.all(this.preReady.map(component => component.Ready));
+      await Promise.all(this.preReady.map(component => this.get(component).Ready));
     }
 
     return this;
@@ -21,7 +21,7 @@ export default class LifecycleContainer extends Container {
   close() {
     if (this.onClose) {
       for (const component of this.onClose) {
-        component.onClose();
+        this.get(component).onClose();
       }
     }
   }

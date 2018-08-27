@@ -57,8 +57,8 @@ function context(options: IOptions) {
   bindings(container, options);
   providers(container);
 
-  container.preReady = [container.get(HostService)];
-  container.onClose = [container.get(BrowserService), container.get(HostService)];
+  container.preReady = [HostService];
+  container.onClose = [BrowserService, HostService];
 
   return container;
 }
