@@ -4,10 +4,10 @@ import chalk from 'chalk';
 import program from 'commander';
 import 'reflect-metadata';
 
+import { version } from '../package.json';
 import { context } from './ioc';
 import { Renderer } from './renderer/renderer';
 import { IArgsType, IOptions } from './types';
-
 /*
  * Initialize the necessary services with Inversify DI,
  * then prerender the app
@@ -41,7 +41,7 @@ async function render(args: IArgsType) {
 /*
  * Initiate marotte with our CLI interface!
  */
-const marotte = program.version('0.0.4');
+const marotte = program.version(version);
 
 marotte
   .command('render')
