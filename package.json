@@ -1,6 +1,6 @@
 {
   "name": "marotte",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "\"A CLI utility to statically prerender your dynamic front-end apps at build time, using Puppeteer & Express",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
