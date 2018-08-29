@@ -1,23 +1,18 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk';
 import program from 'commander';
+import 'reflect-metadata';
 
-import { IOptions } from './renderer/index';
-import { createPuppetRenderer } from './renderer/puppet-renderer.provider';
-import colors from './util/colors.util';
-
-// Defining some configuration
-const format = colors.COMPLETE;
-
-interface IArgsType {
-  workingdir?: string;
-  port?: number;
-  dist?: string;
-}
-
+import { version } from '../package.json';
+import { context } from './ioc';
+import { Renderer } from './renderer/renderer';
+import { IArgsType, IOptions } from './types';
+/*
+ * Initialize the necessary services with Inversify DI,
+ * then prerender the app
+ */
 async function render(args: IArgsType) {
-  // Create & initialize renderer
-
   const DEFAULT_PORT = 4321;
 
   const options: IOptions = {
@@ -27,18 +22,25 @@ async function render(args: IArgsType) {
       workingDir: args.workingdir || process.cwd(),
       distSubDir: args.dist || 'dist',
     },
+    verbose: true,
   };
 
-  const renderer = await createPuppetRenderer(options);
+  // Open context & wait for async services to be ready
+  const ctx = context(options);
+  await ctx.ready();
 
   // Run the prerender loop that crawls the page & spits out HTML snapshots
+  const renderer = ctx.get<Renderer>(Renderer);
   await renderer.run();
 
   // Clean up Puppeteer & Express processes
-  renderer.cleanup();
+  ctx.close();
 }
 
-const marotte = program.version('0.0.2');
+/*
+ * Initiate marotte with our CLI interface!
+ */
+const marotte = program.version(version);
 
 marotte
   .command('render')
@@ -49,7 +51,7 @@ marotte
   .option('-p, --port [port]', 'Port to host Express on [4000]')
   .action((args: IArgsType) => {
     render(args)
-      .then(() => console.log(format('Static prerendering complete!')))
+      .then(() => console.log(chalk.bold.white('Static prerendering complete!')))
       .catch(err => {
         console.error('Err', err);
         process.exit(1);

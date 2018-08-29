@@ -2,14 +2,15 @@ import express from 'express';
 import { Server } from 'http';
 import { join } from 'path';
 
+import { Logger } from '../logger/logger.service';
+import { IOptions } from '../types';
 import IO from '../util/io.util';
-import { TAG } from './index';
 
 /*
 * Fires up an Express.js server to serve the page while Puppeteer
 * is rendering it.
 */
-export default async function provideExpress(options: any): Promise<Server> {
+export default async function provideExpress(options: IOptions, logger: Logger): Promise<Server> {
   const appRoot = join(options.pathParams.workingDir, options.pathParams.distSubDir);
   const index = await IO.readAsString(join(appRoot, 'index.html'));
 
@@ -23,7 +24,7 @@ export default async function provideExpress(options: any): Promise<Server> {
     const s = app.listen(options.port, (err: string) => (err ? reject(err) : resolve(s)));
   });
 
-  console.log(TAG, `Express now serving app at ${options.host}!`);
+  logger.setup(`Express now serving app at ${options.host}!`);
 
   return server;
 }

@@ -1,19 +1,20 @@
-import { Server } from 'http';
+import { inject, injectable } from 'inversify';
 import { difference, uniq } from 'lodash';
 import { join } from 'path';
-import { Browser, Page } from 'puppeteer';
+import { Logger } from './../logger/logger.service';
 
+import { BrowserService } from '../browser/browser.service';
+import { IOptions, TYPES } from '../types';
 import IO from '../util/io.util';
 import parseForRoutes from '../util/scrape.util';
-import { TAG } from './index';
 
-export interface IPuppetRenderer {
-  run(): void;
-  cleanup(): void;
-}
-
-export class PuppetRenderer implements IPuppetRenderer {
-  constructor(private options: any, private server: Server, private browser: Browser, private page: Page) {}
+@injectable()
+export class Renderer {
+  constructor(
+    @inject(TYPES.Options) private options: IOptions,
+    @inject(BrowserService) private browser: BrowserService,
+    @inject(Logger) private logger: Logger,
+  ) {}
 
   /*
      * Crawls the site & renders each route to a static HTML file.
@@ -43,34 +44,19 @@ export class PuppetRenderer implements IPuppetRenderer {
 
         // Scrape result for links, extract the routes, and add the routes that haven't been
         // rendered yet to routesToRender
-
         routesToRender = difference(uniq(routesToRender.concat(parseForRoutes(result))), alreadyRendered);
       }
     }
   }
 
   /*
-     * Closes down the Express and Puppeteer instances.
-     */
-  public cleanup() {
-    this.browser.close();
-    this.server.close();
-  }
-
-  /*
-     * Make Puppeteer visit a single route of our Express-hosted app,
-     * then render it to dist/.
-     * If dist/ doesn't exist, we'll first create it.
-     */
+   * Make Puppeteer visit a single route of our Express-hosted app,
+   * then render it to dist/.
+   * If dist/ doesn't exist, we'll first create it.
+   */
   private async fetchAndRender(route: string): Promise<string> {
     // Request the route
-    await this.page.goto(`${this.options.host}/${route}`);
-
-    // Get the html content after rendering in Chromium
-    // Replace the HTML doctype, which outerHTML drops
-    const result = await this.page.evaluate(
-      'new XMLSerializer().serializeToString(document.doctype) + document.documentElement.outerHTML',
-    );
+    const result = await this.browser.fetch(route);
 
     const filePath = join(
       this.options.pathParams.workingDir,
@@ -79,7 +65,7 @@ export class PuppetRenderer implements IPuppetRenderer {
     );
 
     await IO.writeAndMkdir(filePath, result);
-    console.log(TAG, `Rendered & wrote ${filePath}`);
+    this.logger.run(`Rendered & wrote ${filePath}`);
 
     // Return the page HTML
     return result;
