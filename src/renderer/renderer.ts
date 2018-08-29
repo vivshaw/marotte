@@ -58,11 +58,7 @@ export class Renderer {
     // Request the route
     const result = await this.browser.fetch(route);
 
-    const filePath = join(
-      this.options.pathParams.workingDir,
-      this.options.pathParams.distSubDir,
-      (route || 'index') + '.html',
-    );
+    const filePath = join(this.options.workingDir, this.options.distSubDir, (route || 'index') + '.html');
 
     await IO.writeAndMkdir(filePath, result);
     this.logger.run(`Rendered & wrote ${filePath}`);

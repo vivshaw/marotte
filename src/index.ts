@@ -2,11 +2,10 @@
 
 import chalk from 'chalk';
 import program from 'commander';
-import cosmiconfig from 'cosmiconfig';
-import { defaults } from 'lodash';
+import cosmiconfig, { CosmiconfigResult } from 'cosmiconfig';
+import { assignWith, isUndefined, partialRight } from 'lodash';
 import 'reflect-metadata';
 
-import { version } from '../package.json';
 import { context } from './ioc';
 import { Renderer } from './renderer/renderer';
 import { IArgsType, IOptions, IOptionsFragment } from './types';
@@ -14,27 +13,38 @@ import { IArgsType, IOptions, IOptionsFragment } from './types';
 // Set some defaults for our options
 const DEFAULT_PORT = 4321;
 
-export const DEFAULT_OPTIONS: IOptions = {
+const DEFAULT_OPTIONS: IOptions = {
   port: DEFAULT_PORT,
   host: `http://localhost:${DEFAULT_PORT}`,
-  pathParams: {
-    workingDir: process.cwd(),
-    distSubDir: 'dist',
-  },
+  workingDir: process.cwd(),
+  distSubDir: 'dist',
   verbose: true,
 };
+
+const overwriteIfUndefined = (a: any, b: any) => (isUndefined(b) ? a : b);
+const takeDefaults = partialRight(assignWith, overwriteIfUndefined);
 
 // Convert our node args to an options object like our components expect
 function argsToOptions(args: IArgsType): IOptionsFragment {
   return {
     port: args.port,
-    host: `http://localhost:${args.port}`,
-    pathParams: {
-      workingDir: args.workingdir || process.cwd(),
-      distSubDir: args.dist || 'dist',
-    },
-    verbose: true,
+    host: args.port ? `http://localhost:${args.port}` : undefined,
+    workingDir: args.workingdir,
+    distSubDir: args.dist,
+    verbose: args.verbose,
   };
+}
+
+async function findConfig(): Promise<any> {
+  const explorer = cosmiconfig('marotte');
+  const result: CosmiconfigResult = await explorer.search();
+  if (result) {
+    if (result.isEmpty) {
+      console.log('Config file was empty!');
+    } else {
+      return result.config;
+    }
+  }
 }
 
 /*
@@ -42,9 +52,11 @@ function argsToOptions(args: IArgsType): IOptionsFragment {
  * then prerender the app
  */
 async function render(args: IArgsType) {
-  // Assign options from args, using defaults for what's left
+  // Assign options from args, using defaults for what's left.
+  // config and args override defaults, args override config.
   const argOptions = argsToOptions(args);
-  const options: IOptions = defaults(argOptions, DEFAULT_OPTIONS);
+  const configOptions = await findConfig();
+  const options: IOptions = takeDefaults({}, DEFAULT_OPTIONS, configOptions, argOptions);
 
   // Open context & wait for async services to be ready
   const ctx = context(options);
@@ -61,7 +73,7 @@ async function render(args: IArgsType) {
 /*
  * Initiate marotte with our CLI interface!
  */
-const marotte = program.version(version);
+const marotte = program.version('0.0.4');
 
 marotte
   .command('render')

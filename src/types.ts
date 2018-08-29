@@ -14,10 +14,8 @@ const TYPES = {
 interface IOptions {
   port: number;
   host: string;
-  pathParams: {
-    workingDir: string;
-    distSubDir: string;
-  };
+  workingDir: string;
+  distSubDir: string;
   verbose: boolean;
 }
 
@@ -25,10 +23,8 @@ interface IOptions {
 interface IOptionsFragment {
   port?: number;
   host?: string;
-  pathParams?: {
-    workingDir?: string;
-    distSubDir?: string;
-  };
+  workingDir?: string;
+  distSubDir?: string;
   verbose?: boolean;
 }
 
@@ -37,6 +33,7 @@ interface IArgsType {
   workingdir?: string;
   port?: number;
   dist?: string;
+  verbose?: boolean;
 }
 
 // Any TypeScript class

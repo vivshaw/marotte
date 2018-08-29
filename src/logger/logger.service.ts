@@ -15,6 +15,8 @@ export class Logger {
   constructor(@inject(TYPES.Options) private options: IOptions) {}
 
   setup(msg: string) {
+    console.log(this.options.verbose);
+
     if (this.options.verbose) {
       console.log(COLORS.setup('SETUP: '), msg);
     }

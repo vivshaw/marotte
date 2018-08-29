@@ -11,7 +11,7 @@ import IO from '../util/io.util';
 * is rendering it.
 */
 export default async function provideExpress(options: IOptions, logger: Logger): Promise<Server> {
-  const appRoot = join(options.pathParams.workingDir, options.pathParams.distSubDir);
+  const appRoot = join(options.workingDir, options.distSubDir);
   const index = await IO.readAsString(join(appRoot, 'index.html'));
 
   // Serve static files from disk & index.html from memory
