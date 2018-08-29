@@ -14,11 +14,18 @@ const TYPES = {
 interface IOptions {
   port: number;
   host: string;
-  pathParams: {
-    workingDir: string;
-    distSubDir: string;
-  };
+  workingDir: string;
+  distSubDir: string;
   verbose: boolean;
+}
+
+// Options injected into components
+interface IOptionsFragment {
+  port?: number;
+  host?: string;
+  workingDir?: string;
+  distSubDir?: string;
+  verbose?: boolean;
 }
 
 // Arguments from CLI
@@ -26,6 +33,7 @@ interface IArgsType {
   workingdir?: string;
   port?: number;
   dist?: string;
+  verbose?: boolean;
 }
 
 // Any TypeScript class
@@ -63,7 +71,7 @@ interface ILifecycleOptions {
 export {
   TYPES,
   IArgsType,
-  IOptions,
+  IOptionsFragment,
   TsClass,
   InjectIdentifier,
   Func,
@@ -73,4 +81,5 @@ export {
   ReadiableClassType,
   CloseableClassType,
   ILifecycleOptions,
+  IOptions,
 };
