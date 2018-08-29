@@ -21,6 +21,17 @@ interface IOptions {
   verbose: boolean;
 }
 
+// Options injected into components
+interface IOptionsFragment {
+  port?: number;
+  host?: string;
+  pathParams?: {
+    workingDir?: string;
+    distSubDir?: string;
+  };
+  verbose?: boolean;
+}
+
 // Arguments from CLI
 interface IArgsType {
   workingdir?: string;
@@ -63,7 +74,7 @@ interface ILifecycleOptions {
 export {
   TYPES,
   IArgsType,
-  IOptions,
+  IOptionsFragment,
   TsClass,
   InjectIdentifier,
   Func,
@@ -73,4 +84,5 @@ export {
   ReadiableClassType,
   CloseableClassType,
   ILifecycleOptions,
+  IOptions,
 };
