@@ -1,3 +1,4 @@
+import { interfaces } from 'inversify';
 // Symbolic identifiers for Inversify
 const TYPES = {
   Logger: Symbol('Logger'),
@@ -44,9 +45,32 @@ interface ICloseable {
   onClose: () => Promise<void>;
 }
 
+type CloseableClassType = new (...args: any[]) => ICloseable;
+
 // closeable component
 interface IReadiable {
   Ready: Promise<any>;
 }
 
-export { TYPES, IArgsType, IOptions, TsClass, InjectIdentifier, Func, Provider, ICloseable, IReadiable };
+type ReadiableClassType = new (...args: any[]) => IReadiable;
+
+interface ILifecycleOptions {
+  containerOptions?: interfaces.ContainerOptions;
+  preReady?: ReadiableClassType[];
+  onClose?: CloseableClassType[];
+}
+
+export {
+  TYPES,
+  IArgsType,
+  IOptions,
+  TsClass,
+  InjectIdentifier,
+  Func,
+  Provider,
+  ICloseable,
+  IReadiable,
+  ReadiableClassType,
+  CloseableClassType,
+  ILifecycleOptions,
+};

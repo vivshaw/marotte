@@ -8,30 +8,38 @@ import providePuppeteer from '../browser/puppeteer.provider';
 import provideExpress from '../host/express.provider';
 import { HostService } from '../host/host.service';
 import { Logger } from '../logger/logger.service';
-import { Renderer } from '../renderer/renderer';
+
 import { IOptions, Provider, TYPES } from '../types';
 
 /*
- * Bind classes & values to our container
+ * Create an application context, passing it the CLI options we get
  */
-function bindings(container: LifecycleContainer, options: IOptions) {
+function context(options: IOptions) {
+  // Create extended container with lifecycle management hooks
+  const container = new LifecycleContainer({
+    containerOptions: {
+      defaultScope: 'Singleton',
+      autoBindInjectable: true,
+    },
+    preReady: [HostService],
+    onClose: [BrowserService, HostService],
+  });
+
+  // Do bindings for values and providers.
+  // (Bindings for classes are automatic due to autoBindInjectable)
+  values(container, options);
+  providers(container);
+
+  return container;
+}
+
+export { context };
+
+/*
+ * Bind static values to our container
+ */
+function values(container: LifecycleContainer, options: IOptions) {
   container.bind<IOptions>(TYPES.Options).toConstantValue(options);
-  container
-    .bind<HostService>(HostService)
-    .toSelf()
-    .inSingletonScope();
-  container
-    .bind<BrowserService>(BrowserService)
-    .toSelf()
-    .inSingletonScope();
-  container
-    .bind<Renderer>(Renderer)
-    .toSelf()
-    .inSingletonScope();
-  container
-    .bind<Logger>(Logger)
-    .toSelf()
-    .inSingletonScope();
 }
 
 /*
@@ -42,25 +50,5 @@ function providers(container: LifecycleContainer) {
   const browserProvider = container.bindDependencies(providePuppeteer, [Logger]);
 
   container.bind<Provider<Server>>(TYPES.ServerProvider).toProvider<Server>(() => serverProvider);
-
   container.bind<Provider<Browser>>(TYPES.BrowserProvider).toProvider<Browser>(() => browserProvider);
 }
-
-/*
- * Create an application context, passing it the CLI options we get
- */
-function context(options: IOptions) {
-  // Create extended container with lifecycle management hooks
-  const container = new LifecycleContainer();
-
-  // Do bindings
-  bindings(container, options);
-  providers(container);
-
-  container.preReady = [HostService];
-  container.onClose = [BrowserService, HostService];
-
-  return container;
-}
-
-export { context };
