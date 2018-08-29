@@ -15,6 +15,8 @@ import { IArgsType, IOptions, IOptionsFragment } from './types';
 import IO from './util/io.util';
 
 // Set some defaults for our options
+const VERSION = '0.0.5';
+
 const DEFAULT_PORT = 4321;
 
 const DEFAULT_OPTIONS: IOptions = {
@@ -80,7 +82,7 @@ async function render(args: IArgsType) {
 /*
  * Initiate marotte with our CLI interface!
  */
-const marotte = program.version('0.0.4');
+const marotte = program.version(VERSION);
 
 marotte
   .command('render')
@@ -108,7 +110,8 @@ const questions = [
 function showSplash() {
   const splash = figlet.textSync('marotte');
   console.log(gradientString.atlas(splash));
-  console.log('              version 0.0.4\n');
+  console.log('A framework-agnostic static prerendering app');
+  console.log(`                        version ${VERSION}\n`);
 }
 
 marotte.command('init').action(args => {
