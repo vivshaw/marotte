@@ -1,5 +1,6 @@
 # marotte
 #### A CLI utility to statically prerender your dynamic front-end apps, using Puppeteer &amp; Express
+#### This was a learning project- please don't use it for production applications!
 
 ![Splash](https://i.imgur.com/iMDz6PO.png)
 
